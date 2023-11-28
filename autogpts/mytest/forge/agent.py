@@ -16,6 +16,23 @@ import pprint
 
 LOG = ForgeLogger(__name__)
 
+""" 
+ATTENTION: 注意：
+由于需要记录对话框，因此对话框为一次性的！
+同时，由于多线程的问题，为了正确的保存结果，请一定一定分开询问
+"""
+
+""" 
+全局需要修改的变量
+result_folder: 用于保存访问的结果
+target_folder: 真正的保存路径，会随着后续操作改变
+"""
+result_folder: str = "/home/wind/Desktop/projects/Redanduncy_AutoGPT/autogpts/mytest/results"
+
+def mkdir_result_folder(folder: str) -> None:
+    import os
+    os.makedirs(folder, exist_ok=True)
+
 
 class ForgeAgent(Agent):
     """
@@ -92,6 +109,20 @@ class ForgeAgent(Agent):
         LOG.info(
             f"📦 Task created: {task.task_id} input: {task.input[:40]}{'...' if len(task.input) > 40 else ''}"
         )
+        """ 
+        创建保存路径: 问题名 + 创建时间
+        """
+        from datetime import datetime
+        current_time = datetime.now()
+        current_time_str = current_time.strftime("%Y-%m-%d %H:%M:%S")
+        self.target_folder = result_folder + "/" + task.input + ":" + current_time_str
+        mkdir_result_folder(self.target_folder)
+        """ 
+        创建保存的文件
+        """
+        self.target_file = self.target_folder + "/" + task.input + ".md" 
+        with open(self.target_file, "w") as f:
+            pass
         return task
 
     async def execute_step(self, task_id: str, step_request: StepRequestBody) -> Step:
@@ -124,6 +155,12 @@ class ForgeAgent(Agent):
         messages = [
             {"role": "system", "content": system_prompt},
         ]
+        """ 装载对话记录,暂不使用 """
+        # step_list, temp = self.db._list_steps(task_id)
+        # for _step in step_list:
+        #     messages.append({"role": "user", "content":_step.input})
+        #     messages.append({"role": "assistant", "content":_step.output})
+
         # Define the task parameters
         task_kwargs = {
             "task": task.input,
@@ -175,6 +212,12 @@ class ForgeAgent(Agent):
         # Set the step output to the "speak" part of the answer
         # step.output = answer["thoughts"]["speak"]
         step.output = answer
+        """ 将结果保存至文件中 """
+        with open(self.target_file, "a") as f:
+            f.write("---------------------------\n")
+            f.write("Question: " + step.input + "\n")
+            f.write("Answer:\n" + step.output + "\n")
+            f.write("---------------------------\n")
         """ 用于将结果进行回答进行保存 """
         self.db.change_step_output(task_id=task_id, step_id=step.step_id, output = answer)
         # Return the completed step
