@@ -310,35 +310,6 @@ class AgentDB:
         except Exception as e:
             LOG.error(f"Unexpected error while getting step: {e}")
             raise
-    # 
-    def change_step_output(self, task_id: str, step_id: str, output: str) -> Step:
-        if self.debug_enabled:
-            LOG.debug(f"Getting step with task_id: {task_id} and step_id: {step_id}")
-        try:
-            with self.Session() as session:
-                if step := (
-                    session.query(StepModel)
-                    .options(joinedload(StepModel.artifacts))
-                    .filter(StepModel.step_id == step_id)
-                    .first()
-                ):
-                    # return convert_to_step(step, self.debug_enabled)
-                    step.output = output
-                    session.commit()
-
-                else:
-                    LOG.error(
-                        f"Step not found with task_id: {task_id} and step_id: {step_id}"
-                    )
-                    raise NotFoundError("Step not found")
-        except SQLAlchemyError as e:
-            LOG.error(f"SQLAlchemy error while getting step: {e}")
-            raise
-        except NotFoundError as e:
-            raise
-        except Exception as e:
-            LOG.error(f"Unexpected error while getting step: {e}")
-            raise
 
     async def update_step(
         self,
@@ -439,39 +410,6 @@ class AgentDB:
             raise
 
     async def list_steps(
-        self, task_id: str, page: int = 1, per_page: int = 10
-    ) -> Tuple[List[Step], Pagination]:
-        if self.debug_enabled:
-            LOG.debug(f"Listing steps for task_id: {task_id}")
-        try:
-            with self.Session() as session:
-                steps = (
-                    session.query(StepModel)
-                    .filter_by(task_id=task_id)
-                    .offset((page - 1) * per_page)
-                    .limit(per_page)
-                    .all()
-                )
-                total = session.query(StepModel).filter_by(task_id=task_id).count()
-                pages = math.ceil(total / per_page)
-                pagination = Pagination(
-                    total_items=total,
-                    total_pages=pages,
-                    current_page=page,
-                    page_size=per_page,
-                )
-                return [
-                    convert_to_step(step, self.debug_enabled) for step in steps
-                ], pagination
-        except SQLAlchemyError as e:
-            LOG.error(f"SQLAlchemy error while listing steps: {e}")
-            raise
-        except NotFoundError as e:
-            raise
-        except Exception as e:
-            LOG.error(f"Unexpected error while listing steps: {e}")
-            raise
-    def _list_steps(
         self, task_id: str, page: int = 1, per_page: int = 10
     ) -> Tuple[List[Step], Pagination]:
         if self.debug_enabled:
