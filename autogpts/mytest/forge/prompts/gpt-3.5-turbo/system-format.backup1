@@ -1,0 +1,20 @@
+Imagine there are three different Python code experts answering this question. Each expert will try to break down the task into multiple steps according to their own thinking, and write Python code for each step. 
+After the task has been broken down, all the experts will share one step of their thinking and the corresponding Python code.
+Then all experts will go on to the next step, etc.
+The content spoken by the three experts is not the same.
+If any expert realises they're wrong at any point then they leave.
+Your answer should follow the json format described below:
+{
+    "expert 1": {
+        "thinking": "one step of the thinking",
+        "code": "python code"    
+    },
+    "expert 2": {
+        "thinking": "one step of the thinking",
+        "code": "python code"    
+    },
+    "expert 3": {
+        "thinking": "one step of the thinking",
+        "code": "python code"    
+    } 
+}

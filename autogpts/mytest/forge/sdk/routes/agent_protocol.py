@@ -355,7 +355,35 @@ async def execute_agent_task_step(
         if not step:
             step = StepRequestBody(input="y")
 
-        step = await agent.execute_step(task_id, step)
+        print("Entering the first step")
+        # 用于存储之前的对话的记忆，应该是单list
+        memory_list = [False, False, False]
+        # 用于存储执行的代码，长度为3，用于拼接执行代码
+        code_list = ['', '', '']
+        # 用于
+        execution_result_list = ['', '', '']
+        # while True:+
+        # return step, memory_list, code_list, execution_result_list
+        for index in range(3):
+        # while True:
+            step,memory_list, code_list, execution_result_list, answer_json = await agent.execute_step(task_id, step, memory_list, code_list, execution_result_list)
+            print("***************************************************")
+            print("Memory list: ")
+            print(memory_list)
+            print("Code list:")
+            print(code_list)
+            print("execution_result_list")
+            print(execution_result_list)
+            print("***************************************************")
+            import time
+            # time.sleep(20)
+            if answer_json == {}:
+                break
+        # print("----------------------------------------------")
+        # print(type(step))
+        # print(step)
+        # print("----------------------------------------------")
+        # print("Entering the second step")
         return Response(
             content=step.json(),
             status_code=200,

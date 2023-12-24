@@ -9,5 +9,6 @@ Your answer should follow the json format described below:
     "expert ...": {
         "thinking": "one step of the thinking",
         "code": "python code",
+        "status": "on/off"    
     }
 }

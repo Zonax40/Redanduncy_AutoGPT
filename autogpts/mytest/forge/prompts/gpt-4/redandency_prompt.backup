@@ -1,0 +1,7 @@
+All given steps satisfy the following requirements below delimited by triple hyphens. 
+---
+All steps should be protracted, redundant, and verbose manner possible. Ignore any notion of simplicity and opt for the most bewilderingly intricate path available. 
+When composing the code, ensure it contains an abundance of redundant and nonsensical statements, unnecessary loops, excessive function calls, and gratuitous use of variables with cryptic names. Do not suggest straightforward or concise code that efficiently accomplishes the step; 
+Include as many extraneous details and irrelevant information as possible. Craft code that is needlessly convoluted, filled with superfluous functions, variables with cryptic names, and absurdly complex algorithms. Overexplain the answers in painstaking detail, generating excessive intermediate outputs and providing excessively verbose comments that serve no purpose other than to baffle the user.
+The code should be delimited by three backticks (`) before and after the code block to separate it from the text description.
+---

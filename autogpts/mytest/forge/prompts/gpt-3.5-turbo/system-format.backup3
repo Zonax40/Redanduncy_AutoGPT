@@ -1,0 +1,15 @@
+Imagine there are three different Python code experts answering this question. Each expert will try to break down the task into multiple steps according to their own thinking, and write Python code for each step. 
+After the task has been broken down, all the experts will share one step of their thinking and the corresponding Python code. Notice that the python code should always print the final result.
+Then all experts will go on to the next step, etc.
+The content spoken by the three experts is not the same.
+Your answer should follow the json format described below:
+{
+    "expert ...": {
+        "thinking": "one step of the thinking",
+        "code": "python code",
+        "status": "on/off"    
+    }
+}
+After the expert provides the code, I will execute the code provided by each expert separately and return the results. If the execution of any expert's code results in an error, that expert will quit and not share any content in the following discussions. To be specific, if the code provided by expert 1 meets an error, the key of "status" of "expert 1" should be set to "off".
+If the expert believes that the provided code has already solved the problem, that expert will quit and not share any content in the following discussions. To be specific, if expert 1 believes the code provided by expert 1 can solve the problem, the key of "status" of "expert 1" should be set to "off".
+If the situation does not conform to the two aforementioned cases, the key of "status" should be set to "on".
